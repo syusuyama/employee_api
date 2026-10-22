@@ -14,19 +14,19 @@ public class EmployeeController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
     {
         return Ok(await _service.GetAll());
     }
 
-    [HttpGet("valid")]
+    [HttpGet("GetValid")]
     public async Task<ActionResult<IEnumerable<Employee>>> GetAllIsValid()
     {
         return Ok(await _service.GetAllIsValid());
     }
 
-    [HttpGet("by-shain-no/{shainNo}")]
+    [HttpGet("GetByShainNo/{shainNo}")]
     public async Task<ActionResult<Employee>> GetByShainNo(string shainNo)
     {
         var empListByShainNo = await _service.GetByShainNo(shainNo);
@@ -39,7 +39,7 @@ public class EmployeeController : ControllerBase
         return Ok(empListByShainNo);
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> Create([FromBody] CreateEmployeeDto body)
     {
         //400 BadRequestは入れるべき？→[ApiController]がついているので、DTOで付与した属性に応じてバリデーションエラーを自動で出してくれる
@@ -56,7 +56,7 @@ public class EmployeeController : ControllerBase
             body);  //★画面からの登録時のレスポンスボディを確認
     }
 
-    [HttpPut("{shainNo}")]
+    [HttpPut("Update/{shainNo}")]
     public async Task<IActionResult> Update(string shainNo, [FromBody] UpdateEmployeeDto body)
     {
         var result = await _service.UpdateEmployee(shainNo, body);
@@ -68,7 +68,7 @@ public class EmployeeController : ControllerBase
         };
     }
 
-    [HttpDelete("logical/{shainNo}")]
+    [HttpDelete("LogicalDelete/{shainNo}")]
     public async Task<IActionResult> LogicalDelete(string shainNo)
     {
         var result = await _service.LogicalDelete(shainNo);
@@ -80,7 +80,7 @@ public class EmployeeController : ControllerBase
         };
     }
 
-    [HttpDelete("physical/{shainNo}")]
+    [HttpDelete("PhysicalDelete/{shainNo}")]
     public async Task<IActionResult> PhysicalDelete(string shainNo)
     {
         var result = await _service.PhysicalDelete(shainNo);
@@ -91,5 +91,7 @@ public class EmployeeController : ControllerBase
             EmployeeResult.NotFound => NotFound("社員が存在しません。")
         };
     }
+
+
 }
 
