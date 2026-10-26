@@ -14,19 +14,19 @@ public class EmployeeController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("GetAll")]
+    [HttpGet("getAll")]
     public async Task<ActionResult<IEnumerable<Employee>>> GetAll()
     {
         return Ok(await _service.GetAll());
     }
 
-    [HttpGet("GetValid")]
+    [HttpGet("getValid")]
     public async Task<ActionResult<IEnumerable<Employee>>> GetAllIsValid()
     {
         return Ok(await _service.GetAllIsValid());
     }
 
-    [HttpGet("GetByShainNo/{shainNo}")]
+    [HttpGet("getByShainNo/{shainNo}")]
     public async Task<ActionResult<Employee>> GetByShainNo(string shainNo)
     {
         var empListByShainNo = await _service.GetByShainNo(shainNo);
@@ -39,7 +39,7 @@ public class EmployeeController : ControllerBase
         return Ok(empListByShainNo);
     }
 
-    [HttpPost("Create")]
+    [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateEmployeeDto body)
     {
         //400 BadRequestは入れるべき？→[ApiController]がついているので、DTOで付与した属性に応じてバリデーションエラーを自動で出してくれる
@@ -56,7 +56,7 @@ public class EmployeeController : ControllerBase
             body);  //★画面からの登録時のレスポンスボディを確認
     }
 
-    [HttpPut("Update/{shainNo}")]
+    [HttpPut("update/{shainNo}")]
     public async Task<IActionResult> Update(string shainNo, [FromBody] UpdateEmployeeDto body)
     {
         var result = await _service.UpdateEmployee(shainNo, body);
@@ -68,7 +68,7 @@ public class EmployeeController : ControllerBase
         };
     }
 
-    [HttpDelete("LogicalDelete/{shainNo}")]
+    [HttpDelete("logicalDelete/{shainNo}")]
     public async Task<IActionResult> LogicalDelete(string shainNo)
     {
         var result = await _service.LogicalDelete(shainNo);
@@ -80,7 +80,7 @@ public class EmployeeController : ControllerBase
         };
     }
 
-    [HttpDelete("PhysicalDelete/{shainNo}")]
+    [HttpDelete("physicalDelete/{shainNo}")]
     public async Task<IActionResult> PhysicalDelete(string shainNo)
     {
         var result = await _service.PhysicalDelete(shainNo);

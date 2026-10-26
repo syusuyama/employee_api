@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 //POST用
 public class CreateEmployeeDto
 {
-    [Required]
-    [StringLength(5)]
-    public string ShainNo { get; set; } = ""; //社員番号
+    //[Required]
+    //[StringLength(5)]
+    //public string ShainNo { get; set; } = ""; //社員番号
 
     [Required]
     [StringLength(20)]
@@ -28,6 +28,10 @@ public class CreateEmployeeDto
 //PUT用
 public class UpdateEmployeeDto
 {
+    [Required]
+    [StringLength(5)]
+    public string ShainNo { get; set; } = ""; //社員番号
+
     [Required]
     [StringLength(20)]
     public string Name { get; set; } = ""; //社員名
