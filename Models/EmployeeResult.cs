@@ -6,4 +6,11 @@ namespace EmployeeModel
         NotFound,
         Conflict
     }
+
+    public enum SearchResult
+    {
+        BadRequest,
+        Success
+    }
+
 }

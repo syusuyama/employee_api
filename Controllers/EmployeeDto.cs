@@ -1,5 +1,7 @@
 //DTO
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using EmployeeModel;
 
 //POST用
 public class CreateEmployeeDto
@@ -49,3 +51,35 @@ public class UpdateEmployeeDto
     public bool IsDeleted { get; set; } = false; //論理削除フラグ
 
 }
+
+
+
+//練習用ーーーーーーーーーーーーーーーーー
+
+public class SearchResponceDto
+{
+    [Required]
+    [StringLength(5)]
+    public string ShainNo { get; set; } = ""; //社員番号
+
+    [Required]
+    [StringLength(20)]
+    public string Name { get; set; } = ""; //社員名
+
+    [Required]
+    [StringLength(20)]
+    public string Busho { get; set; } = ""; //部署
+
+    [Range(0, 100)]
+    public int Age { get; set; } //年齢
+}
+
+public class SearchResultDto
+{
+    public SearchResult result { get; set; }
+
+    public List<SearchResponceDto>? employees { get; set; }
+}
+
+
+//練習用ーーーーーーーーーーーーーーーーー

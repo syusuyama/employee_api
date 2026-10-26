@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using EmployeeServices;
 using EmployeeModel;
+using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore.Storage;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -64,7 +66,8 @@ public class EmployeeController : ControllerBase
         return result switch
         {
             EmployeeResult.Success => Ok(),
-            EmployeeResult.NotFound => NotFound("社員が存在しません。")
+            EmployeeResult.NotFound => NotFound("社員が存在しません。"),
+            _ => StatusCode(500)
         };
     }
 
@@ -76,7 +79,8 @@ public class EmployeeController : ControllerBase
         return result switch
         {
             EmployeeResult.Success => Ok(),
-            EmployeeResult.NotFound => NotFound("社員が存在しません。")
+            EmployeeResult.NotFound => NotFound("社員が存在しません。"),
+            _ => StatusCode(500)
         };
     }
 
@@ -88,9 +92,39 @@ public class EmployeeController : ControllerBase
         return result switch
         {
             EmployeeResult.Success => Ok(),
-            EmployeeResult.NotFound => NotFound("社員が存在しません。")
+            EmployeeResult.NotFound => NotFound("社員が存在しません。"),
+            _ => StatusCode(500)
         };
     }
+
+
+//練習ーーーーーーーーーーーーーーーーーーーー
+
+
+[HttpGet("search")]
+public async Task<ActionResult<List<SearchResponceDto>?>> Search([FromQuery] string? name, [FromQuery] int? minAge, [FromQuery] int? maxAge, [FromQuery]  bool sortDesc)
+    {
+        var employees = await _service.Search(name, minAge, maxAge, sortDesc);
+
+        if(employees.result == SearchResult.BadRequest)
+        {
+            return BadRequest();
+        }
+
+        return Ok(employees.employees);
+
+    }
+
+
+
+
+
+
+
+
+//練習ーーーーーーーーーーーーーーーーーーーー
+
+
 
 
 }

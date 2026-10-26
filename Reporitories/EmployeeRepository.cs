@@ -1,5 +1,8 @@
+using System.Reflection.Metadata.Ecma335;
 using EmployeeModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace EmployeeRepositories
 
@@ -92,7 +95,58 @@ namespace EmployeeRepositories
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
         }
-    }
 
+
+
+    //練習ーーーーーーーーーーーーーーーーー
+
+    public async Task<List<SearchResponceDto>> Search(string? name, int? minAge, int? maxAge, bool sortDesc)
+        {
+            IQueryable<Employee> employees = _context.Employees.Where(e => !e.IsDeleted);
+
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                employees = employees.Where(e => EF.Functions.Like(e.Name.ToLower(), $"%{name.ToLower()}%"));//部分一致
+            }
+
+            if (minAge.HasValue)
+            {
+                employees = employees.Where(e => e.Age >= minAge.Value);
+            }
+
+            if (maxAge.HasValue)
+            {
+                employees = employees.Where(e => e.Age <= maxAge.Value);
+            }
+
+            if (sortDesc)
+            {
+                employees = employees.OrderByDescending(e => e.Age);  
+            }
+            else
+            {
+                employees = employees.OrderBy(e => e.Age);  
+            }
+
+            var result = employees.Select(g => new SearchResponceDto
+                                        {
+                                            ShainNo = g.ShainNo,
+                                            Name = g.Name,
+                                            Busho = g.Busho,
+                                            Age = g.Age
+                                        }).ToListAsync();
+
+            return await result;
+        }
+
+
+
+    //練習ーーーーーーーーーーーーーーーーー
+
+
+
+
+    }
 
 }

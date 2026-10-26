@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using EmployeeModel;
 using EmployeeRepositories;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace EmployeeServices
 {
@@ -141,5 +143,36 @@ namespace EmployeeServices
             await _repository.PhysicalDelete(employee);
             return EmployeeResult.Success;
         }
+
+
+        //練習用ーーーーーーーーーーーーーーーーーーーー
+
+        public async Task<SearchResultDto?> Search(string? name, int? minAge, int? maxAge, bool sortDesc)
+        {
+            if (minAge.HasValue && maxAge.HasValue &&
+                minAge.Value > maxAge.Value)
+            {
+                return new SearchResultDto
+                {
+                  result = SearchResult.BadRequest,
+                  employees = null
+                };
+            }
+
+            var empList = await _repository.Search(name, minAge, maxAge, sortDesc);
+
+            return new SearchResultDto
+                {
+                  result = SearchResult.Success,
+                  employees = empList
+                };
+        }
+
+
+
+        //練習用ーーーーーーーーーーーーーーーーーーーー
+
+
+
     };
 };
